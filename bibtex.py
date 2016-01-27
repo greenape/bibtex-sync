@@ -23,8 +23,8 @@ def strip_field(field_name, bibtex):
 	"""
 	Strip a field out of a bibtex file string.
 	"""
-	reg = "%s.*,\n" % field_name
-	return re.sub(reg, "", bibtex)
+	reg = "\n%s.*,\n" % field_name
+	return re.sub(reg, "\n", bibtex)
 
 def do_sync(in_file, out_dir, strip_fields):
 	path, fname = os.path.split(in_file)
@@ -32,6 +32,7 @@ def do_sync(in_file, out_dir, strip_fields):
 		bibtex = f.read()
 	for field in strip_fields:
 		bibtex = strip_field(field, bibtex)
+	fname = fname.replace(" ", "_")
 	target = os.path.join(out_dir, fname)
 	with open(target, "w") as f:
 		f.write(bibtex)
